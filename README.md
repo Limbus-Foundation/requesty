@@ -1,6 +1,5 @@
-<img style="width: 100%; box-sizing: border-box;" src="https://github.com/user-attachments/assets/3c30a01c-628c-4cf5-a18e-9176ff4f0de8" alt="Limbus Foundation Logo" width="200">
 
-
+<img style="width: 100%;" width="1338" height="280" alt="Electron-Layer-repo-banner (1)" src="https://github.com/user-attachments/assets/c39dc93b-aea0-4d79-8cac-0d452e159b51" />
 
 # Requesty Library
 
