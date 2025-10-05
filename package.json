@@ -1,0 +1,26 @@
+{
+  "name": "@limbusfoundation/requesty",
+  "version": "1.0.0",
+  "description": "Request Flow Library",
+  "main": "src/requesty.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Limbus-Foundation/requesty.git"
+  },
+  "keywords": [
+    "requesty",
+    "http",
+    "httprequest",
+    "api",
+    "rest"
+  ],
+  "author": "Limbus Foundation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Limbus-Foundation/requesty/issues"
+  },
+  "homepage": "https://github.com/Limbus-Foundation/requesty#readme"
+}
