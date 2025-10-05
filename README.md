@@ -10,7 +10,7 @@
 ## Installation
 
 ```bash
-npm install requesty
+npm i @limbusfoundation/requesty
 ```
 
 ---

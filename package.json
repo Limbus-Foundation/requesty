@@ -1,6 +1,6 @@
 {
   "name": "@limbusfoundation/requesty",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Request Flow Library",
   "main": "src/requesty.js",
   "scripts": {
