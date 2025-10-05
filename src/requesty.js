@@ -5,7 +5,9 @@
  *  maintainer org -  https://github.com/Limbus-Foundation                                     *
  *---------------------------------------------------------------------------------------------*/
 
-// REQUESTY 
+// REQUESTY : 
+
+import { parseParam } from "./utils/parse-param.js";
 
 const configTemplate = {
     baseUrl: "https://dummyjson.com",
@@ -31,6 +33,7 @@ export class Requesty {
         this.retry = config.retry || configTemplate.retry;
         this.debug = config.debug || configTemplate.debug;
         this.cache = {};
+        this.paramList = null;
         
     }
 
@@ -153,8 +156,13 @@ export class Requesty {
         this.baseUrl = url;
     }
 
+    _param(params){
+        const query = parseParam(params);
+        return query;
+    }
+
     async get(url, config = {}, callback) {
-        const res = await this._rFetch(url, "GET", config.headers);
+        const res = await this._rFetch(`${url}${this._param(config.query)}`, "GET", config.headers);
         callback && callback(res);
         return res;
     }
@@ -178,7 +186,7 @@ export class Requesty {
     }
 
     async delete(url, config = {}, callback) {
-        const res = await this._rFetch(url, "DELETE", config.headers);
+        const res = await this._rFetch(`${url}${this._param(config.query)}`, "DELETE", config.headers);
         callback && callback(res);
         return res;
     }

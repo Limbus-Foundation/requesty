@@ -54,6 +54,7 @@ const api = new Requesty({
 - **dataConversion**: How the response is parsed (`json` or `text`).
 - **headers**: Global headers for all requests.
 - **timeout**: Request timeout in milliseconds.
+- **query**: query params to get on request
 - **retry**: Number of automatic retry attempts for 5xx errors.
 - **debug**: Enable detailed logging.
 - **interceptRequest**: Function to intercept and modify requests before sending.
@@ -124,6 +125,18 @@ Performs a DELETE request.
 
 ```javascript
 await api.delete("/products/1", {}, (res) => console.log("DELETE Callback:", res));
+```
+
+### `query {yourQueryName=value}`
+you can add a list of `'keys/values'` to your query inside `'query'` key
+
+```javascript
+api.get("categories", {
+    query: { search: "mycategoryName" }
+}, (data) => {
+    console.log("cateogory " + JSON.stringify(data));
+});
+;
 ```
 
 ---
