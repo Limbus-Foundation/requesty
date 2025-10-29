@@ -16,7 +16,7 @@ const configTemplate = {
     headers: {},
     timeout: 5000,
     retry: 0,
-    debug: false
+    debug: false,
 };
 
 export class Requesty {
@@ -102,7 +102,7 @@ export class Requesty {
                 }
 
                 const result = {
-                    ok: response.ok,
+                    success: response.ok,
                     status: response.status,
                     data,
                     controller
@@ -132,7 +132,7 @@ export class Requesty {
                 if (err.name === "AbortError") {
                     if (this.debug)
                         console.warn(`${this.appName} Request Timeout > ${this.timeout}ms`);
-                    return { error: true, message: "Timeout", ok: false, controller };
+                    return { error: true, message: "Timeout", success: false, controller };
                 }
 
                 if (attempts > 0) {
@@ -143,10 +143,27 @@ export class Requesty {
 
                 if (this.debug)
                     console.error(`${this.appName} Request Error >`, err.message);
-                return { error: true, message: err.message, ok: false, controller };
+                return { error: true, message: err.message, success: false, controller };
             }
         }
     }
+
+    data(response) {
+        if (response && response.data) return response.data;
+    }
+
+    success(response) {
+        if (response && typeof response.success !== "undefined") return response.success;
+    }
+
+    status(response) {
+        if (response && typeof response.status !== "undefined") return response.status;
+    }
+
+    error(response) {
+        if (response && typeof response.error !== "undefined") return response.error;
+    }
+
 
     cancelRequest(controller) {
         if (controller) controller.abort();
@@ -161,32 +178,39 @@ export class Requesty {
         return query;
     }
 
+    _parseRoute(arr) {
+        if (!Array.isArray(arr) || arr.length === 0) return "";
+        const valid = arr.filter(v => v !== undefined && v !== null && v !== "");
+        return valid.length ? "/" + valid.join("/") : "";
+    }
+
+
     async get(url, config = {}, callback) {
-        const res = await this._rFetch(`${url}${this._param(config.query)}`, "GET", config.headers);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "GET", config.headers);
         callback && callback(res);
         return res;
     }
 
     async post(url, config = {}, callback) {
-        const res = await this._rFetch(url, "POST", config.headers, config.body);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "POST", config.headers, config.body);
         callback && callback(res);
         return res;
     }
 
     async put(url, config = {}, callback) {
-        const res = await this._rFetch(url, "PUT", config.headers, config.body);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "PUT", config.headers, config.body);
         callback && callback(res);
         return res;
     }
 
     async patch(url, config = {}, callback) {
-        const res = await this._rFetch(url, "PATCH", config.headers, config.body);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "PATCH", config.headers, config.body);
         callback && callback(res);
         return res;
     }
 
     async delete(url, config = {}, callback) {
-        const res = await this._rFetch(`${url}${this._param(config.query)}`, "DELETE", config.headers);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "DELETE", config.headers);
         callback && callback(res);
         return res;
     }
