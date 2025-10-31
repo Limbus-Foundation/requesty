@@ -13,7 +13,7 @@ const configTemplate = {
     baseUrl: "https://dummyjson.com",
     appName: "myApp",
     dataConversion: "json",
-    headers: {},
+    header: {},
     timeout: 5000,
     retry: 0,
     debug: false,
@@ -26,7 +26,7 @@ export class Requesty {
         this.baseUrl = config.baseUrl;
         this.appName = config.appName || configTemplate.appName;
         this.dataConversion = config.dataConversion || configTemplate.dataConversion;
-        this.headers = config.headers || {};
+        this.header = config.header || {};
         this.interceptRequest = null;
         this.interceptResponse = null;
         this.timeout = config.timeout || configTemplate.timeout;
@@ -37,22 +37,22 @@ export class Requesty {
         
     }
 
-    async _rFetch(url, method, headers = {}, body) {
+    async _rFetch(url, method, header = {}, body) {
 
         let finalConfig = {
             url: `${this.baseUrl.replace(/\/$/, "")}/${url}`,
             method,
-            headers: { ...this.headers, ...headers },
+            header: { ...this.header, ...header },
             body
         };
 
         if (body && typeof body === "object" && !(body instanceof FormData)) {
             finalConfig.body = JSON.stringify(body);
-            finalConfig.headers["Content-Type"] = "application/json";
+            finalConfig.header["Content-Type"] = "application/json";
         }
 
         if (body instanceof FormData) {
-            delete finalConfig.headers["Content-Type"];
+            delete finalConfig.header["Content-Type"];
         }
 
         if (typeof this.interceptRequest === "function") {
@@ -77,7 +77,7 @@ export class Requesty {
             try {
                 const response = await fetch(finalConfig.url, {
                     method: finalConfig.method,
-                    headers: finalConfig.headers,
+                    header: finalConfig.header,
                     body: finalConfig.body,
                     signal
                 });
@@ -186,31 +186,31 @@ export class Requesty {
 
 
     async get(url, config = {}, callback) {
-        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "GET", config.headers);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "GET", config.header);
         callback && callback(res);
         return res;
     }
 
     async post(url, config = {}, callback) {
-        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "POST", config.headers, config.body);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "POST", config.header, config.body);
         callback && callback(res);
         return res;
     }
 
     async put(url, config = {}, callback) {
-        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "PUT", config.headers, config.body);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "PUT", config.header, config.body);
         callback && callback(res);
         return res;
     }
 
     async patch(url, config = {}, callback) {
-        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "PATCH", config.headers, config.body);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "PATCH", config.header, config.body);
         callback && callback(res);
         return res;
     }
 
     async delete(url, config = {}, callback) {
-        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "DELETE", config.headers);
+        const res = await this._rFetch(`${url}${this._parseRoute(config.route)}${this._param(config.query)}`, "DELETE", config.header);
         callback && callback(res);
         return res;
     }
